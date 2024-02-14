@@ -1,18 +1,18 @@
-// Add Express
-const express = require("express");
+const jsonServer = require('json-server')
+const cors = require('cors')
+const path = require('path')
 
-// Initialize Express
-const app = express();
+const server = jsonServer.create()
+const router = jsonServer.router(path.join(__dirname, 'db.json'))
+const middlewares = jsonServer.defaults()
 
-// Create GET request
-app.get("/", (req, res) => {
-  res.send("Express on Vercel");
-});
+server.use(cors())
+server.use(jsonServer.bodyParser)
+server.use(middlewares)
+server.use(router)
 
-// Initialize server
-app.listen(5000, () => {
-  console.log("Running on port 5000.");
-});
+const PORT = 8000
 
-// Export the Express API
-module.exports = app;
+server.listen(PORT, () => {
+  console.log(`JSON Server is running on http://localhost:${PORT}`)
+})
